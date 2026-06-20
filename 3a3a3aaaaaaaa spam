@@ -1,7 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local remote = ReplicatedStorage:WaitForChild("CustomChatEvent")
 local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
 
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 ScreenGui.Name = "SpamGui"
@@ -29,49 +28,15 @@ local function makeDraggable(guiObject)
     end)
 end
 
--- ==========================================
--- 🔔 دروستکردنی نۆتیفیکەیشن و دەنگ
--- ==========================================
-local NotificationFrame = Instance.new("Frame", ScreenGui)
-NotificationFrame.Size = UDim2.new(0, 260, 0, 60)
-NotificationFrame.Position = UDim2.new(0.5, -130, 0, -80) -- سەرەتا بەرزەیە
-NotificationFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-NotificationFrame.BorderSizePixel = 0
-
-local Corner = Instance.new("UICorner", NotificationFrame)
-Corner.CornerRadius = UDim.new(0, 8)
-
-local NotifLabel = Instance.new("TextLabel", NotificationFrame)
-NotifLabel.Size = UDim2.new(1, 0, 1, 0)
-NotifLabel.BackgroundTransparency = 1
-NotifLabel.Text = "Rio ئەڤ سکریپتە چێکریە"
-NotifLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-NotifLabel.Font = Enum.Font.SourceSansBold
-NotifLabel.TextSize = 16
-
--- دروستکردنی دەنگی سترانێ
-local IntroSound = Instance.new("Sound", workspace)
-IntroSound.SoundId = "rbxassetid://17647322226"
-IntroSound.Volume = 1
-IntroSound.Looped = false
-
--- سترانەکا جیاواز بۆ کاتی سپامێ
-local SpamSound = Instance.new("Sound", workspace)
-SpamSound.SoundId = "rbxassetid://17647322226"
-SpamSound.Volume = 1
-SpamSound.Looped = true
--- ==========================================
-
--- دوگمەیا K3 (Rainbow) - سەرەتا بەرزەیە
+-- دوگمەیا K3 (Rainbow)
 local ToggleButton = Instance.new("TextButton", ScreenGui)
 ToggleButton.Size = UDim2.new(0, 100, 0, 40)
 ToggleButton.Position = UDim2.new(0, 10, 0, 10)
 ToggleButton.Text = "K3"
 ToggleButton.TextColor3 = Color3.new(1, 1, 1)
-ToggleButton.Visible = false -- ل سەرەتادا دیار نابێت
 makeDraggable(ToggleButton)
 
-task.spawn(function()
+spawn(function()
     while true do
         for i = 0, 1, 0.01 do
             ToggleButton.BackgroundColor3 = Color3.fromHSV(i, 1, 1)
@@ -80,25 +45,22 @@ task.spawn(function()
     end
 end)
 
--- Frame - سەرەتا بەرزەیە
+-- Frame
 local Frame = Instance.new("Frame", ScreenGui)
 Frame.Size = UDim2.new(0, 200, 0, 150)
 Frame.Position = UDim2.new(0.5, -100, 0.5, -75)
 Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-Frame.Visible = false -- ل سەرەتادا دیار نابێت
 makeDraggable(Frame)
 
--- TextBox و دوگمەکان
+-- TextBox و دوگمە
 local TextBox = Instance.new("TextBox", Frame)
 TextBox.Size = UDim2.new(1, 0, 0, 40)
-TextBox.Text = "as di qoze xoshko dayko matet ta geeem👹👺👹👹👹SYG_HAMKO ROKNAL SAR QOZE WE... [TEXT REPEATED]"
 TextBox.PlaceholderText = "تێکستێ لێرە بنڤێسه"
-TextBox.TextScaled = true
 
 local Button = Instance.new("TextButton", Frame)
 Button.Size = UDim2.new(1, 0, 0, 35)
 Button.Position = UDim2.new(0, 0, 0, 40)
-Button.Text = "PURE NO-WAIT"
+Button.Text = "PURE NO-WAIT" -- ناڤ هاتیە گۆڕین
 Button.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
 
 local StopButton = Instance.new("TextButton", Frame)
@@ -110,55 +72,23 @@ StopButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
 local spamming = false
 
 Button.Activated:Connect(function()
-    if spamming then return end
     spamming = true
-    
-    SpamSound:Play()
-    SpamSound.Volume = 1
-    
     for i = 1, 1000 do 
         if not spamming then break end
+        
+        -- پاقژترین شێواز بۆ فرێکرنا دەستبەجێ بێی تێکچوونا شاشێ
         pcall(function()
             remote:FireServer(TextBox.Text)
         end)
+        
     end
-    
     spamming = false
-    SpamSound:Stop()
 end)
 
 StopButton.Activated:Connect(function()
     spamming = false
-    TweenService:Create(SpamSound, TweenInfo.new(0.3), {Volume = 0}):Play()
-    task.wait(0.3)
-    SpamSound:Stop()
 end)
 
 ToggleButton.Activated:Connect(function()
     Frame.Visible = not Frame.Visible
 end)
-
--- ==========================================
--- 🎬 دەستپێکرنا ئەنیمەیشنێ (رێک ل سەرەتادا)
--- ==========================================
-task.spawn(function()
-    -- ١. ستران لێدەدات و نامە دێتە خوارێ
-    IntroSound:Play()
-    NotificationFrame:TweenPosition(UDim2.new(0.5, -130, 0, 20), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.5, true)
-    
-    -- ٢. چاوەڕێی ٦ چرکە دەکات
-    task.wait(6)
-    
-    -- ٣. نامە نامێنێت و دەنگی پێشەکی کەم دەبێتەوە
-    NotificationFrame:TweenPosition(UDim2.new(0.5, -130, 0, -80), Enum.EasingDirection.In, Enum.EasingStyle.Quart, 0.5, true)
-    TweenService:Create(IntroSound, TweenInfo.new(0.5), {Volume = 0}):Play()
-    
-    task.wait(0.5)
-    IntroSound:Stop()
-    IntroSound:Destroy()
-    
-    -- ٤. نوکە GUI و دوگمەیا K3 ئۆتۆماتیکی دیار دبن!
-    ToggleButton.Visible = true
-    Frame.Visible = true
-end)
--- ==========================================
